@@ -7,7 +7,6 @@ import logsRouter from "./routers/logs.js";
 import aurthRouter from "./routers/auth.js";
 
 const app = express();
-const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
@@ -17,6 +16,6 @@ app.use('/users', usersRouter);
 app.use('/logs', logsRouter);
 app.use('/auth', aurthRouter);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
 });

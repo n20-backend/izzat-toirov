@@ -1,4 +1,5 @@
 import express from 'express';
+import { employeeSchemaMiddleware } from '../middleware/validator.js';
 import { getEmployees, getIdEmployees, createEmployee, deleteEmployee } from '../controllers/employees.js';
 
 const router = express.Router();
@@ -27,7 +28,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 // Create a new employee
-router.post('/', async (req, res) => {
+router.post('/', employeeSchemaMiddleware, async (req, res) => {
     const { first_name, last_name, email, phone, department_id, position, salary } = req.body;
     try {
         const newEmployee = await createEmployee(first_name, last_name, email, phone, department_id, position, salary);

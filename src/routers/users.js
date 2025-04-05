@@ -1,4 +1,7 @@
 import express from 'express';
+import validator from 'validator';
+import bcrypt from "bcrypt"
+import { validateUserMiddleware } from '../middleware/validator.js';
 import { getUsers, getIdUsers, createUser, deleteUser } from '../controllers/users.js';
 
 const router = express.Router();
@@ -27,10 +30,11 @@ router.get('/:id', async (req, res) => {
     }
 });
 // Create a new user
-router.post('/', async (req, res) => {
+router.post('/', validateUserMiddleware, async (req, res, next) => {
     const { username, email, password_hash, role } = req.body;
     try {
-        const newUser = await createUser(username, email, password_hash, role);
+        const hash = await bcrypt.hash(password_hash, 10)
+        const newUser = await createUser(username, email, hash, role);
         res.status(201).json(newUser);
     } catch (error) {
         console.error('Error creating user:', error);

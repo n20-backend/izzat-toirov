@@ -24,7 +24,7 @@ export const getEmployees = async () => {
 export const getIdEmployees = async (id) => {
     try {
         const query = `
-            SELECT e.id, e.first_name, e.last_name, e.email, e.phone, e.position, e.salary, e.hire_date,
+            SELECT e.id, e.first_name, e.last_name, e.email, e.phone, e.position, e.salary, e.hire_date, e.created_at, e.updated_at,
                     json_build_object(
                         'id', d.id,
                         'name', d.name
