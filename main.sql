@@ -26,8 +26,11 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
+    phone_number VARCHAR(20) UNIQUE,           -- Telefon raqami (ixtiyoriy)
     password_hash TEXT NOT NULL,
     role VARCHAR(50),
+    is_verified BOOLEAN DEFAULT FALSE,         -- Foydalanuvchi tasdiqlanganmi
+    otp_code VARCHAR(10),                      -- OTP kodi vaqtincha saqlanadi
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );

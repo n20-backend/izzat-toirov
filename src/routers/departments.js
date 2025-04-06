@@ -1,4 +1,5 @@
 import express from 'express';
+import { authMiddleware } from '../middleware/authmiddleware.js';
 import { getDepartments, getIdDepartments, createDepartment, deleteDepartment } from '../controllers/departments.js';
 
 const router = express.Router();

@@ -1,9 +1,9 @@
-import express from 'express';
+
 import jwt from 'jsonwebtoken';
 
 export const authMiddleware = (req, res, next) => {
-    const token = req.headers['Authorization']?.split(" ")[1];
-
+    const token = req.headers["Authorization"]?.split(" ")[1];
+    
     if (!token) {
         return res.status(401).json({ error: 'No token provided' });
     }
@@ -12,7 +12,7 @@ export const authMiddleware = (req, res, next) => {
         let data = jwt.verify(token, 'maxfiy');
         req.user = data;
         res.status(200).json({ message: 'Token is valid' });
-        // next();
+        next();
     } catch (error) {
         return res.status(401).json({ error: 'Invalid token' });
         

@@ -26,11 +26,11 @@ export const getIdUsers = async (id) => {
 };
 
 //create user
-export const createUser = async (username, email, password_hash, role ) => {
+export const createUser = async (username, email, phone_number, password_hash, role, otp_code) => {
     try {
         const result = await pool.query(
-            'INSERT INTO users (username, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING *',
-            [username, email, password_hash, role]
+            'INSERT INTO users (username, email, phone_number, password_hash, role, otp_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [username, email, phone_number, password_hash, role, otp_code] // Tartibni to‘g‘riladim
         );
         return result.rows[0];
     } catch (error) {
@@ -38,6 +38,7 @@ export const createUser = async (username, email, password_hash, role ) => {
         throw error;
     }
 };
+
 
 //delete user
 export const deleteUser = async (id) => {

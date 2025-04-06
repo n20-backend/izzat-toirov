@@ -1,7 +1,7 @@
 import express from 'express';
-import validator from 'validator';
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import { validateUserMiddleware } from '../middleware/validator.js';
+// import { authMiddleware } from '../middleware/authmiddleware.js';
 import { getUsers, getIdUsers, createUser, deleteUser } from '../controllers/users.js';
 
 const router = express.Router();
@@ -30,11 +30,12 @@ router.get('/:id', async (req, res) => {
     }
 });
 // Create a new user
-router.post('/', validateUserMiddleware, async (req, res, next) => {
-    const { username, email, password_hash, role } = req.body;
+router.post('/', async (req, res) => {
+    const { username, email, phone_number, password_hash, role, otp_code } = req.body;
     try {
-        const hash = await bcrypt.hash(password_hash, 10)
-        const newUser = await createUser(username, email, hash, role);
+        const hash = await bcrypt.hash(password_hash, 10);
+        const newUser = await createUser(username, email, phone_number, hash, role, otp_code);
+        
         res.status(201).json(newUser);
     } catch (error) {
         console.error('Error creating user:', error);
@@ -55,4 +56,6 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
 export default router;

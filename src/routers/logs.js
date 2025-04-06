@@ -1,6 +1,6 @@
 import express from 'express';
 import { getLogs, getIdLogs, createLog, deleteLog } from '../controllers/logs.js';
-import { authMiddleware } from '../middleware/authmiddleware.js';
+// import { authMiddleware } from '../middleware/authmiddleware.js';
 
 const router = express.Router();
 // Get all logs
