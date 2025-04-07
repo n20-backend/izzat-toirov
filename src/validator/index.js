@@ -10,7 +10,7 @@ export const validateUser = z.object({
 export const employeeSchema = z.object({
   first_name: z
     .string()
-    .min(1, "First name is required")
+    .min(3, "First name is required")
     .max(100, "First name is too long"),
   last_name: z
     .string()

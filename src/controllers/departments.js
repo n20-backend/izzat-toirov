@@ -39,6 +39,22 @@ export const createDepartment = async (name) => {
     }
 };
 
+// Uptade department
+export const updateDepartment = async (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    try {
+      const result = await pool.query(
+        'UPDATE departments SET name = $1, updated_at = NOW() WHERE id = $2 RETURNING *',
+        [name, id]
+      );
+      if (result.rowCount === 0) return res.status(404).json({ message: 'Topilmadi' });
+      res.json(result.rows[0]);
+    } catch (err) {
+      res.status(500).json({ message: 'Server xatosi' });
+    }
+  };
+
 // Delete a department
 export const deleteDepartment = async (id) => {
     try {

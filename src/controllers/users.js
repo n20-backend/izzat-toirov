@@ -39,6 +39,80 @@ export const createUser = async (username, email, phone_number, password_hash, r
     }
 };
 
+//Uptade user
+
+export const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const {
+      username,
+      email,
+      phone_number,
+      password_hash,
+      role,
+      is_verified,
+      otp_code,
+    } = req.body;
+  
+    const fields = [];
+    const values = [];
+    let index = 1;
+  
+    if (username !== undefined) {
+      fields.push(`username = $${index++}`);
+      values.push(username);
+    }
+    if (email !== undefined) {
+      fields.push(`email = $${index++}`);
+      values.push(email);
+    }
+    if (phone_number !== undefined) {
+      fields.push(`phone_number = $${index++}`);
+      values.push(phone_number);
+    }
+    if (password_hash !== undefined) {
+      fields.push(`password_hash = $${index++}`);
+      values.push(password_hash);
+    }
+    if (role !== undefined) {
+      fields.push(`role = $${index++}`);
+      values.push(role);
+    }
+    if (is_verified !== undefined) {
+      fields.push(`is_verified = $${index++}`);
+      values.push(is_verified);
+    }
+    if (otp_code !== undefined) {
+      fields.push(`otp_code = $${index++}`);
+      values.push(otp_code);
+    }
+  
+    if (fields.length === 0) {
+      return res.status(400).json({ message: 'Hech qanday ma\'lumot yuborilmadi' });
+    }
+  
+    fields.push(`updated_at = NOW()`);
+  
+    const query = `
+      UPDATE users
+      SET ${fields.join(', ')}
+      WHERE id = $${index}
+      RETURNING *;
+    `;
+  
+    values.push(id);
+  
+    try {
+      const { rows } = await pool.query(query, values);
+      if (rows.length === 0) {
+        return res.status(404).json({ message: 'Foydalanuvchi topilmadi' });
+      }
+      res.json(rows[0]);
+    } catch (err) {
+      console.error('Update error:', err);
+      res.status(500).json({ message: 'Server xatosi' });
+    }
+  };
+
 
 //delete user
 export const deleteUser = async (id) => {

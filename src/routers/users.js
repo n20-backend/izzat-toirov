@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from "bcrypt";
 import { validateUserMiddleware } from '../middleware/validator.js';
 // import { authMiddleware } from '../middleware/authmiddleware.js';
-import { getUsers, getIdUsers, createUser, deleteUser } from '../controllers/users.js';
+import { getUsers, getIdUsers, createUser, deleteUser, updateUser } from '../controllers/users.js';
 
 const router = express.Router();
 // Get all users
@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 // Create a new user
-router.post('/', async (req, res) => {
+router.post('/', validateUserMiddleware, async (req, res) => {
     const { username, email, phone_number, password_hash, role, otp_code } = req.body;
     try {
         const hash = await bcrypt.hash(password_hash, 10);
@@ -42,6 +42,11 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+//Uptade users
+router.put('/:id', validateUserMiddleware, updateUser);
+
+
 // Delete a user
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;

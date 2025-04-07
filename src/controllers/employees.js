@@ -58,6 +58,39 @@ export const createEmployee = async (first_name, last_name, email, phone, depart
     }
 };
 
+// Uptade employee
+export const updateEmployee = async (req, res) => {
+    const { id } = req.params;
+    const { first_name, last_name, email, phone, department_id, position, salary } = req.body;
+  
+    const fields = [];
+    const values = [];
+    let i = 1;
+  
+    if (first_name !== undefined) fields.push(`first_name = $${i++}`), values.push(first_name);
+    if (last_name !== undefined) fields.push(`last_name = $${i++}`), values.push(last_name);
+    if (email !== undefined) fields.push(`email = $${i++}`), values.push(email);
+    if (phone !== undefined) fields.push(`phone = $${i++}`), values.push(phone);
+    if (department_id !== undefined) fields.push(`department_id = $${i++}`), values.push(department_id);
+    if (position !== undefined) fields.push(`position = $${i++}`), values.push(position);
+    if (salary !== undefined) fields.push(`salary = $${i++}`), values.push(salary);
+  
+    if (fields.length === 0) return res.status(400).json({ message: "Hech narsa yuborilmadi" });
+  
+    fields.push(`updated_at = NOW()`);
+    values.push(id);
+  
+    const query = `UPDATE employees SET ${fields.join(', ')} WHERE id = $${values.length} RETURNING *`;
+  
+    try {
+      const result = await pool.query(query, values);
+      if (result.rowCount === 0) return res.status(404).json({ message: "Topilmadi" });
+      res.json(result.rows[0]);
+    } catch (err) {
+      res.status(500).json({ message: 'Xatolik' });
+    }
+  };
+
 
 //Delete employee
 export const deleteEmployee = async (id) => {

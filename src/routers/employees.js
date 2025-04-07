@@ -1,6 +1,6 @@
 import express from 'express';
 import { employeeSchemaMiddleware } from '../middleware/validator.js';
-import { getEmployees, getIdEmployees, createEmployee, deleteEmployee } from '../controllers/employees.js';
+import { getEmployees, getIdEmployees, createEmployee, updateEmployee, deleteEmployee } from '../controllers/employees.js';
 
 const router = express.Router();
 // Get all employees
@@ -38,6 +38,9 @@ router.post('/', employeeSchemaMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+//Uptade employee
+router.put('/:id',  updateEmployee);
 
 // Delete an employee
 router.delete('/:id', async (req, res) => {

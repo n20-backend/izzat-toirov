@@ -1,6 +1,6 @@
 import express from 'express';
-import { authMiddleware } from '../middleware/authmiddleware.js';
-import { getDepartments, getIdDepartments, createDepartment, deleteDepartment } from '../controllers/departments.js';
+// import { authMiddleware } from '../middleware/authmiddleware.js';
+import { getDepartments, getIdDepartments, createDepartment, deleteDepartment, updateDepartment } from '../controllers/departments.js';
 
 const router = express.Router();
 
@@ -41,6 +41,9 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+//Uptade Department
+router.put('/:id',  updateDepartment);
 
 // Delete a department
 router.delete('/:id', async (req, res) => {
