@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { validateUserMiddleware } from "../middleware/validator.js"
 import { createAuth, getAuth } from '../controllers/auth.js';
 
 const router = Router();
 
-router.post('/register', async (req, res)=>{
+router.post('/register', validateUserMiddleware, async (req, res)=>{
     try {
         const { username, email, password_hash} = req.body;
         if (!password_hash) {
