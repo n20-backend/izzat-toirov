@@ -26,11 +26,11 @@ export const getIdUsers = async (id) => {
 };
 
 //create user
-export const createUser = async (username, email, phone_number, password_hash, role, otp_code) => {
+export const createUser = async (username, email, password_hash, role) => {
     try {
         const result = await pool.query(
-            'INSERT INTO users (username, email, phone_number, password_hash, role, otp_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [username, email, phone_number, password_hash, role, otp_code] // Tartibni to‘g‘riladim
+            'INSERT INTO users (username, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING *',
+            [username, email, password_hash, role] // Tartibni to‘g‘riladim
         );
         return result.rows[0];
     } catch (error) {
@@ -46,11 +46,8 @@ export const updateUser = async (req, res) => {
     const {
       username,
       email,
-      phone_number,
       password_hash,
       role,
-      is_verified,
-      otp_code,
     } = req.body;
   
     const fields = [];
@@ -65,10 +62,6 @@ export const updateUser = async (req, res) => {
       fields.push(`email = $${index++}`);
       values.push(email);
     }
-    if (phone_number !== undefined) {
-      fields.push(`phone_number = $${index++}`);
-      values.push(phone_number);
-    }
     if (password_hash !== undefined) {
       fields.push(`password_hash = $${index++}`);
       values.push(password_hash);
@@ -76,14 +69,6 @@ export const updateUser = async (req, res) => {
     if (role !== undefined) {
       fields.push(`role = $${index++}`);
       values.push(role);
-    }
-    if (is_verified !== undefined) {
-      fields.push(`is_verified = $${index++}`);
-      values.push(is_verified);
-    }
-    if (otp_code !== undefined) {
-      fields.push(`otp_code = $${index++}`);
-      values.push(otp_code);
     }
   
     if (fields.length === 0) {

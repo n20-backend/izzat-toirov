@@ -31,10 +31,10 @@ router.get('/:id', async (req, res) => {
 });
 // Create a new user
 router.post('/', validateUserMiddleware, async (req, res) => {
-    const { username, email, phone_number, password_hash, role, otp_code } = req.body;
+    const { username, email, password_hash, role } = req.body;
     try {
         const hash = await bcrypt.hash(password_hash, 10);
-        const newUser = await createUser(username, email, phone_number, hash, role, otp_code);
+        const newUser = await createUser(username, email, hash, role);
         
         res.status(201).json(newUser);
     } catch (error) {
