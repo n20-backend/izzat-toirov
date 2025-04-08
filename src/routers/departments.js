@@ -1,5 +1,5 @@
 import express from 'express';
-// import { authMiddleware } from '../middleware/authmiddleware.js';
+import { authMiddleware } from '../middleware/authmiddleware.js';
 import { getDepartments, getIdDepartments, createDepartment, deleteDepartment, updateDepartment } from '../controllers/departments.js';
 
 const router = express.Router();
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new department
-router.post('/', async (req, res) => {
+router.post('/',  async (req, res) => {
     const { name } = req.body;
     try {
         const newDepartment = await createDepartment(name);
